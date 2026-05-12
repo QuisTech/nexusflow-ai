@@ -1,17 +1,17 @@
-"use client";
-import React, { useState } from 'react';
-import { LayoutDashboard, ShieldCheck, Box } from 'lucide-react';
-import { CommandCenter } from '@/components/CommandCenter';
-import { ObservabilityPortal } from '@/components/ObservabilityPortal';
-import { InventoryMatrix } from '@/components/InventoryMatrix';
+import { LandingPage } from '@/components/LandingPage';
 
 export default function NexusFlowApp() {
+  const [view, setView] = useState('landing');
   const [activeTab, setActiveTab] = useState('dashboard');
+
+  if (view === 'landing') {
+    return <LandingPage onLaunch={() => setView('app')} />;
+  }
 
   return (
     <div className="flex flex-col h-screen bg-black text-slate-200">
       <header className="border-b border-slate-800 p-4 flex justify-between items-center bg-slate-950">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 cursor-pointer" onClick={() => setView('landing')}>
           <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center font-bold">N</div>
           <h1 className="text-xl font-bold tracking-tight text-white">NexusFlow <span className="text-blue-500 font-light italic">AI</span></h1>
         </div>
