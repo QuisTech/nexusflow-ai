@@ -1,41 +1,42 @@
 import React from 'react';
-import { BarChart2, Search, Zap } from 'lucide-react';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { Search, Info } from 'lucide-react';
 
-export default function ObservabilityPortal() {
+const data = [
+  { name: '00:00', score: 0.01 }, { name: '04:00', score: 0.05 },
+  { name: '08:00', score: 0.02 }, { name: '12:00', score: 0.12 },
+  { name: '16:00', score: 0.03 }, { name: '20:00', score: 0.01 }
+];
+
+export const ObservabilityPortal = () => {
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex items-center gap-4 border-b pb-4">
-        <Zap className="text-amber-500" />
-        <h2 className="text-2xl font-semibold">Arize Phoenix Observability</h2>
-      </div>
-      
+    <div className="p-6 space-y-6 bg-black min-h-screen">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white p-6 rounded-xl border shadow-sm">
-          <h3 className="text-lg font-medium mb-4 flex items-center gap-2">
-            <BarChart2 size={18} /> Hallucination Score Trends
-          </h3>
-          <div className="h-48 bg-slate-50 flex items-end justify-between p-4 gap-2">
-             {/* Simulated Chart Bars */}
-             {[40, 20, 10, 5, 2, 8, 3].map((h, i) => (
-               <div key={i} className="bg-emerald-500 w-full rounded-t" style={{ height: `${h}%` }}></div>
-             ))}
+        <div className="bg-slate-900 p-6 rounded-xl border border-slate-800">
+          <h3 className="text-slate-100 font-semibold mb-4 flex items-center gap-2"><Info size={16}/> Gemini Hallucination Score (Arize Trace)</h3>
+          <div className="h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={data}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+                <XAxis dataKey="name" stroke="#94a3b8" />
+                <YAxis stroke="#94a3b8" />
+                <Tooltip contentStyle={{backgroundColor: '#0f172a', border: 'none'}} />
+                <Line type="monotone" dataKey="score" stroke="#3b82f6" strokeWidth={2} />
+              </LineChart>
+            </ResponsiveContainer>
           </div>
         </div>
-
-        <div className="bg-white p-6 rounded-xl border shadow-sm">
-          <h3 className="text-lg font-medium mb-4">Trace Explorer</h3>
-          <div className="space-y-3">
-            <div className="p-3 bg-slate-50 rounded border text-sm flex justify-between cursor-pointer hover:bg-slate-100">
-              <span>trace_exec_9921_reroute</span>
-              <span className="text-green-600">Matched (0.98)</span>
-            </div>
-            <div className="p-3 bg-slate-50 rounded border text-sm flex justify-between cursor-pointer hover:bg-slate-100">
-              <span>trace_exec_9918_inventory</span>
-              <span className="text-green-600">Matched (0.95)</span>
-            </div>
-          </div>
+        <div className="bg-slate-900 p-6 rounded-xl border border-slate-800 overflow-auto">
+            <h3 className="text-slate-100 font-semibold mb-4">Recent Execution Traces</h3>
+            <table className="w-full text-left text-sm text-slate-400">
+                <thead><tr className="border-b border-slate-800"><th className="pb-2">Trace ID</th><th className="pb-2">Agent</th><th className="pb-2">Latency</th></tr></thead>
+                <tbody>
+                    <tr className="border-b border-slate-800/50"><td className="py-2 font-mono">tr-9821</td><td>Orchestrator</td><td>1.2s</td></tr>
+                    <tr className="border-b border-slate-800/50"><td className="py-2 font-mono">tr-9819</td><td>Navigator</td><td>0.8s</td></tr>
+                </tbody>
+            </table>
         </div>
       </div>
     </div>
   );
-}
+};

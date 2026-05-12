@@ -1,20 +1,12 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY || "");
+const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY || "";
+const genAI = new GoogleGenerativeAI(apiKey);
 
-export const getGeminiModel = (modelName: string = "gemini-1.5-pro-latest") => {
-  return genAI.getGenerativeModel({ model: modelName });
-};
+export const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro-latest" });
 
-/**
- * Wrapper for executing Agent logic with Gemini
- */
-export async function runAgentReasoning(prompt: string, context: any) {
-  const model = getGeminiModel();
-  const result = await model.generateContent([
-    `Context: ${JSON.stringify(context)}`,
-    `Task: ${prompt}`
-  ]);
+export async function runReasoning(prompt: string) {
+  const result = await model.generateContent(prompt);
   const response = await result.response;
   return response.text();
 }
