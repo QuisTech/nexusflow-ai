@@ -1,4 +1,4 @@
-import { runAgentReasoning } from "@/lib/gemini";
+import { runReasoning } from "@/lib/gemini";
 import { AnomalyAlert } from "./SentinelScout";
 import { RouteRisk } from "./ContextualNavigator";
 
@@ -12,7 +12,7 @@ export class StrategicOrchestrator {
     const prompt = `Based on the alert ${alert.description} and a risk score of ${risks[0].riskScore}, 
     what is the optimal rerouting strategy for our current inventory levels in MongoDB?`;
     
-    const reasoning = await runAgentReasoning(prompt, { alert, risks, inventory });
+    const reasoning = await runReasoning(prompt);
     
     return {
       action: "REROUTE_SHIPMENT",
